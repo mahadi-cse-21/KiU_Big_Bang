@@ -11,8 +11,16 @@ class HealthEndpointTest extends TestCase
         $response = $this->get('/health');
 
         $response->assertStatus(200);
-        $response->assertExactJson([
+        $response->assertJson([
             'status' => 'ok'
+        ]);
+        $response->assertJsonStructure([
+            'status',
+            'checks' => [
+                'optimizer' => ['status'],
+                'llm' => ['status'],
+                'storage' => ['status']
+            ]
         ]);
     }
 
@@ -21,8 +29,16 @@ class HealthEndpointTest extends TestCase
         $response = $this->get('/api/health');
 
         $response->assertStatus(200);
-        $response->assertExactJson([
+        $response->assertJson([
             'status' => 'ok'
+        ]);
+        $response->assertJsonStructure([
+            'status',
+            'checks' => [
+                'optimizer',
+                'llm',
+                'storage'
+            ]
         ]);
     }
 }
